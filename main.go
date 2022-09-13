@@ -30,9 +30,25 @@ func getMovies(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(movies)
 }
 
-func getMovie()
+func getMovie(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for _, item := range movies {
+		if item.ID == params["id"]{
+			json.NewEncoder(w).Encode(item)
+			return
+		}
+	}
+}
 
-func createMovie()
+func createMovie(w http.ResponseWriter, r *http.Request){
+w.Header().Set("Content-Type", "application/json")
+var movie Movie 
+_ = json.NewDecoder(r.body).Decode(&movie)
+movie.ID = strconv.Itoa(rand.Intn(10000000))
+movies = append(movies, movie)
+json.NewEncoder(w).Encode(movie)
+}
 
 func deleteMovie(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
@@ -42,10 +58,13 @@ func deleteMovie(w http.ResponseWriter, r *http.Request){
 			movies = append(movies[:index], movies[index+1]...)
 			break
 		}
-	} 
+	}
+	json.NewEncoder(w).Encode(movies) 
 }
 
-func updateMovie()
+func updateMovie(w http.Response, r *http.Request){
+	w.Header().Set()
+}
 
 
 func main() {
